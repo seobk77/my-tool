@@ -639,7 +639,7 @@ public class KafkaPanel extends JPanel {// implements Observer {
                         List<Node> replicas = info.replicas();
                         replicasCount = replicasCount + replicas.size();
                     }
-                    int replicationFactor =  replicasCount / replicasCount;
+                    int replicationFactor =  replicasCount / partitionCount;
                     
                     System.out.println("\n [Topic Infomation]");
                     System.out.printf(" - TopicName: %s\n", resultTopicName);
