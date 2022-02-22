@@ -1,6 +1,6 @@
 package free.my.tool.util;
 
-import static free.my.tool.ui.panel.ZookeeperPanel_org.E_KEY;
+import static free.my.tool.ui.panel.ZookeeperPanel.E_KEY;
 
 import java.security.Key;
 import java.util.Base64;
