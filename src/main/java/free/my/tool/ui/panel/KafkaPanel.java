@@ -53,7 +53,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.kafka.clients.admin.Admin;
+import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.CreateTopicsResult;
 import org.apache.kafka.clients.admin.DeleteTopicsResult;
@@ -495,7 +495,7 @@ public class KafkaPanel extends JPanel {// implements Observer {
 		String bootstrapServers = kafkaCommandMap.get("kafka.bootstrap.server");
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        try(Admin admin = Admin.create(props)) {
+        try(AdminClient admin = AdminClient.create(props)) {
             ListTopicsResult listTopics = admin.listTopics();
             try {
                 Set<String> topics = listTopics.names().get();
@@ -597,7 +597,7 @@ public class KafkaPanel extends JPanel {// implements Observer {
 			String bootstrapServers = kafkaCommandMap.get("kafka.bootstrap.server");
 	        Properties props = new Properties();
 	        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-	        try(Admin admin = Admin.create(props)) {
+	        try(AdminClient admin = AdminClient.create(props)) {
 	            DeleteTopicsResult deleteTopics = admin.deleteTopics(Arrays.asList(topicName));
 	            KafkaFuture<Void> all = deleteTopics.all();
 	            try {
@@ -620,9 +620,9 @@ public class KafkaPanel extends JPanel {// implements Observer {
 			String bootstrapServers = kafkaCommandMap.get("kafka.bootstrap.server");
             Properties props = new Properties();
             props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-            try(Admin admin = Admin.create(props)) {
+            try(AdminClient admin = AdminClient.create(props)) {
                 DescribeTopicsResult describeTopics = admin.describeTopics(Arrays.asList(topicName));
-                KafkaFuture<Map<String, TopicDescription>> all = describeTopics.all();
+                KafkaFuture<Map<String, TopicDescription>> all = describeTopics.allTopicNames();
                 try {
                     Map<String, TopicDescription> result = all.get();
                     TopicDescription topicDescription = result.get(topicName);
@@ -761,7 +761,7 @@ public class KafkaPanel extends JPanel {// implements Observer {
 			String bootstrapServers = kafkaCommandMap.get("kafka.bootstrap.server");
 			Properties props = new Properties();
 			props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-			try(Admin admin = Admin.create(props)) {
+			try(AdminClient admin = AdminClient.create(props)) {
 			    List<NewTopic> topics = selectedValuesList.stream().map(topic -> new NewTopic(topic, Integer.parseInt(partition), Short.parseShort(replication))).collect(Collectors.toList());
 			    
 			    // Create a compacted topic
