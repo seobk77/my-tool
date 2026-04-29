@@ -1,2 +1,2 @@
 # my-tool
-My Tool (내꺼)
+My Tool 
